@@ -32,8 +32,8 @@ class Sidetrack_Studio_Dev_Customizer {
 		$customizer_additions->add_panel(
 			'ss_dev_wp_control_panel',
 			array(
-				'title'       => __( 'SS dev Control Panel', 'sidetrack-dev-tools' ),
-				'description' => __( 'SS dev Control Panel', 'sidetrack-dev-tools' ),
+				'title'       => __( 'ssDev Control Panel', 'sidetrack-dev-tools' ),
+				'description' => __( 'ssDev Control Panel', 'sidetrack-dev-tools' ),
 				'priority'    => 1,
 			)
 		);
@@ -51,7 +51,7 @@ class Sidetrack_Studio_Dev_Customizer {
 		$customizer_additions->add_section(
 			'ss_dev_wp_controls_section',
 			array(
-				'title'       => __( 'SS dev Section', 'sidetrack-dev-tools' ),
+				'title'       => __( 'ssDev Section', 'sidetrack-dev-tools' ),
 				'priority'    => 6,
 				'panel'       => 'ss_dev_wp_control_panel',
 				'description' => __(
@@ -82,7 +82,7 @@ class Sidetrack_Studio_Dev_Customizer {
 				$customizer_additions,
 				'toggle_on_ss_dev_wp_code',
 				array(
-					'label'       => __( 'Turn off SS dev tracking code', 'sidetrack-dev-tools' ),
+					'label'       => __( 'Turn off ssDev tracking code', 'sidetrack-dev-tools' ),
 					'description' => __(
 						'The default setting is on. This option allows you to turn this code off, if need be.',
 						'sidetrack-dev-tools'
@@ -105,7 +105,7 @@ class Sidetrack_Studio_Dev_Customizer {
 		$customizer_additions->add_control(
 			'ss_dev_wp_uet_code',
 			array(
-				'label'       => __( 'SS dev tracking Tag ID', 'sidetrack-dev-tools' ),
+				'label'       => __( 'ssDev tracking Tag ID', 'sidetrack-dev-tools' ),
 				'type'        => 'text',
 				'settings'    => 'ss_dev_wp_uet_code',
 				'section'     => 'ss_dev_wp_controls_section',
@@ -119,7 +119,7 @@ class Sidetrack_Studio_Dev_Customizer {
 		$customizer_additions->add_section(
 			'ss_dev_wp_controls_second',
 			array(
-				'title'       => __( 'SS dev 2nd Section', 'sidetrack-dev-tools' ),
+				'title'       => __( 'ssDev 2nd Section', 'sidetrack-dev-tools' ),
 				'priority'    => 6,
 				'panel'       => 'ss_dev_wp_control_panel',
 				'description' => __(
@@ -161,7 +161,7 @@ class Sidetrack_Studio_Dev_Customizer {
 		$customizer_additions->add_control(
 			'ss_dev_wp_currency_code',
 			array(
-				'label'       => __( 'SS dev Currency Code', 'sidetrack-dev-tools' ),
+				'label'       => __( 'ssDev Currency Code', 'sidetrack-dev-tools' ),
 				'type'        => 'select',
 				'choices'     => array(
 					'AED' => __( 'United Arab Emirates Dirham', 'sidetrack-dev-tools' ),
@@ -202,6 +202,19 @@ class Sidetrack_Studio_Dev_Customizer {
 				)
 			)
 		);
+	}
+
+	public function load_window_size_script() {
+		wp_register_script( 'window-size', plugins_url( 'js/show-window-size.js', __DIR__ ), array( 'jquery' ), time() );
+		if ( true === $this->filter_boolean_toggle( 'toggle_on_ss_dev_wp_debug' ) ) {
+			wp_enqueue_script( 'window-size' );
+		}
 
 	}
+
+	public function filter_boolean_toggle( $input ) {
+		$boolean_toggle = filter_var( get_option( $input ), FILTER_VALIDATE_BOOLEAN );
+		return $boolean_toggle;
+	}
+
 }

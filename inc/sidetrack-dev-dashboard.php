@@ -86,6 +86,40 @@ function request_something_to_ss_dev() {
 	}
 }
 
+add_action( 'add_to_ss_dev_dash', 'check_dev_code_is_on' );
+function check_dev_code_is_on() {
+	echo '<h2>' . ucwords( preg_replace( '/_+/', ' ', __FUNCTION__ ) ) . '</h2>';
+	// $dev_code = get_option( 'toggle_on_ss_dev_wp_debug' );
+	$dev_code = filter_var( get_option( 'toggle_on_ss_dev_wp_debug' ), FILTER_VALIDATE_BOOLEAN );
+	echo '<h3 style="margin-left:1rem;">';
+	if ( true === $dev_code ) {
+		echo '<span style="color:green;">Dev Code is ON</span>';
+	} else {
+		echo '<span style="color:red;">Dev Code is OFF</span>';
+	}
+	echo '</h3>';
+}
+
+add_action( 'add_to_ss_dev_dash', 'add_customizer_button' );
+function add_customizer_button() {
+	echo '<h2>' . ucwords( preg_replace( '/_+/', ' ', __FUNCTION__ ) ) . '</h2>';
+	echo '<a href="' . admin_url( 'customize.php' ) . '" target="_blank">admin_url( \'customize.php\' )</a>';
+}
+
+add_action( 'add_to_ss_dev_dash', 'print_theme_mods' );
+function print_theme_mods() {
+	echo '<h2>' . ucwords( preg_replace( '/_+/', ' ', __FUNCTION__ ) ) . '</h2>';
+	$theme_mods = get_theme_mods();
+	$dev_code   = filter_var( get_option( 'toggle_on_ss_dev_wp_debug' ), FILTER_VALIDATE_BOOLEAN );
+	echo '<pre>$dev_code ';
+	print_r( $dev_code );
+	echo '<be>gettype($dev_code) ';
+	print_r( gettype( $dev_code ) );
+	echo '<be>$theme_mods ';
+	print_r( $theme_mods );
+	echo '</pre>';
+}
+
 add_action( 'add_to_ss_dev_dash', 'search_something_for_ss_dev' );
 function search_something_for_ss_dev() {
 	$current_url = home_url( add_query_arg( null, null ) );

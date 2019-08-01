@@ -20,8 +20,9 @@ function ss_dev_admin_init() {
 }
 
 function ss_dev_settings_page_init() {
-	$plugin_data   = get_ss_dev_setup_data();
-	$settings_page = add_dashboard_page( $plugin_data['Name'] . ' Settings', $plugin_data['Name'] . ' Settings', 'manage_options', 'sidetrack-settings', 'ss_dev_settings_page' );
+	$plugin_data = get_ss_dev_setup_data();
+	// $settings_page = add_dashboard_page( $plugin_data['Name'] . ' Settings', $plugin_data['Name'] . ' Settings', 'manage_options', 'sidetrack-settings', 'ss_dev_settings_page' );
+	$settings_page = add_dashboard_page( 'Sidetrack Settings', 'Sidetrack Settings', 'manage_options', 'sidetrack-settings', 'ss_dev_settings_page' );
 	add_action( "load-{$settings_page}", 'ss_dev_load_settings_page' );
 }
 
@@ -91,7 +92,18 @@ function get_ss_dev_setup_data() {
 	$plugin_data['Name'] = 'Sidetrack';
 	return $plugin_data;
 }
+
+
 function ss_dev_settings_page() {
+	global $wpdb;
+	echo '<div class="wrap">';
+	echo '<h2>' . ucwords( preg_replace( '/_+/', ' ', __FUNCTION__ ) ) . '</h2>';
+
+	echo '</div>';
+}
+
+
+function ss_dev_settings_page1() {
 	global $pagenow;
 	$settings    = get_option( 'ss_dev_tabbed_settings' );
 	$plugin_data = get_ss_dev_setup_data();

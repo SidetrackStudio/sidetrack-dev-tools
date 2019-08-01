@@ -14,6 +14,8 @@ function ss_dev_dashboard() {
 	$slug  = preg_replace( '/_+/', '-', __FUNCTION__ );
 	$label = ucwords( preg_replace( '/_+/', ' ', __FUNCTION__ ) );
 	add_dashboard_page( __( $label, 'sidetrack-dev-tools' ), __( $label, 'sidetrack-dev-tools' ), 'manage_options', $slug . '.php', 'ss_dev_dashboard_page' );
+	$settings_page = add_dashboard_page( __( $label . '-dev', 'sidetrack-dev-tools' ), __( $label . '-dev', 'sidetrack-dev-tools' ), 'manage_options', $slug . '-dev.php', 'ss_dev_dashboard_page' );
+	add_action( "load-{$settings_page}", 'ss_dev_load_settings_page' );
 }
 
 

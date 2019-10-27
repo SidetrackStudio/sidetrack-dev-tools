@@ -9,6 +9,7 @@ class Sidetrack_Studio_Dev_Customizer {
 
 	public function __construct() {
 		add_action( 'customize_register', array( $this, 'ss_dev_customizer_manager' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_window_size_script' ) );
 	}
 
 	/**
@@ -177,7 +178,7 @@ class Sidetrack_Studio_Dev_Customizer {
 		);
 
 		$customizer_additions->add_setting(
-			'toggle_on_ss_dev_wp_debug',
+			'toggle_on_ss_dev_vanilla_size',
 			array(
 				'default'   => false,
 				'type'      => 'option',
@@ -188,15 +189,42 @@ class Sidetrack_Studio_Dev_Customizer {
 		$customizer_additions->add_control(
 			new Customizer_Toggle_Control(
 				$customizer_additions,
-				'toggle_on_ss_dev_wp_debug',
+				'toggle_on_ss_dev_vanilla_size',
 				array(
-					'label'       => __( 'Turn on debug code', 'sidetrack-dev-tools' ),
+					'label'       => __( 'Turn on vanilla js code for Window Size', 'sidetrack-dev-tools' ),
 					'description' => __(
 						'The default setting is off. This option allows you to turn this code off, if need be.',
 						'sidetrack-dev-tools'
 					),
 					'section'     => 'ss_dev_wp_controls_section',
-					'settings'    => 'toggle_on_ss_dev_wp_debug',
+					'settings'    => 'toggle_on_ss_dev_vanilla_size',
+					'type'        => 'ios',
+					'priority'    => 41,
+				)
+			)
+		);
+
+		$customizer_additions->add_setting(
+			'toggle_on_ss_dev_jq_size',
+			array(
+				'default'   => false,
+				'type'      => 'option',
+				'transport' => 'refresh',
+			)
+		);
+
+		$customizer_additions->add_control(
+			new Customizer_Toggle_Control(
+				$customizer_additions,
+				'toggle_on_ss_dev_jq_size',
+				array(
+					'label'       => __( 'Turn on jQuery code for Window Size', 'sidetrack-dev-tools' ),
+					'description' => __(
+						'The default setting is off. This option allows you to turn this code off, if need be.',
+						'sidetrack-dev-tools'
+					),
+					'section'     => 'ss_dev_wp_controls_section',
+					'settings'    => 'toggle_on_ss_dev_jq_size',
 					'type'        => 'ios',
 					'priority'    => 41,
 				)
@@ -206,13 +234,13 @@ class Sidetrack_Studio_Dev_Customizer {
 
 	public function load_window_size_script() {
 		wp_register_script( 'window-size', plugins_url( 'js/show-window-size.js', __DIR__ ), array( 'jquery' ), time() );
-		if ( true === $this->filter_boolean_toggle( 'toggle_on_ss_dev_wp_debug' ) ) {
+		if ( true === self::filter_boolean_toggle( 'toggle_on_ss_dev_jq_size' ) ) {
 			wp_enqueue_script( 'window-size' );
 		}
 
 	}
 
-	public function filter_boolean_toggle( $input ) {
+	public static function filter_boolean_toggle( $input ) {
 		$boolean_toggle = filter_var( get_option( $input ), FILTER_VALIDATE_BOOLEAN );
 		return $boolean_toggle;
 	}

@@ -13,20 +13,23 @@
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
-if ( file_exists( __DIR__ . '/inc' ) && is_dir( __DIR__ . '/inc' ) ) {
-	/**
-	 * Include all php files in /inc directory.
-	 */
-	foreach ( glob( __DIR__ . '/inc/*.php' ) as $filename ) {
-		require $filename;
+add_action( 'plugins_loaded', 'sidetrack_dev_tools_initialization' );
+function sidetrack_dev_tools_initialization() {
+	if ( file_exists( __DIR__ . '/inc' ) && is_dir( __DIR__ . '/inc' ) ) {
+		/**
+		 * Include all php files in /inc directory.
+		 */
+		foreach ( glob( __DIR__ . '/inc/*.php' ) as $filename ) {
+			require $filename;
+		}
 	}
-}
-if ( file_exists( __DIR__ . '/inc/classes' ) && is_dir( __DIR__ . '/inc/classes' ) ) {
-	/**
-	 * Include all php files in /inc/classes directory.
-	 */
-	foreach ( glob( __DIR__ . '/inc/classes/*.php' ) as $filename ) {
-		require $filename;
+	if ( file_exists( __DIR__ . '/inc/classes' ) && is_dir( __DIR__ . '/inc/classes' ) ) {
+		/**
+		 * Include all php files in /inc/classes directory.
+		 */
+		foreach ( glob( __DIR__ . '/inc/classes/*.php' ) as $filename ) {
+			require $filename;
+		}
 	}
 }
 

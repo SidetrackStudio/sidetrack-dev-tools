@@ -5,7 +5,7 @@
  */
 
 add_action( 'init', 'ss_dev_admin_init' );
-add_action( 'admin_menu', 'ss_dev_settings_page_init' );
+add_action( 'admin_menu', 'ss_dev_settings_page_init', 13 );
 
 function ss_dev_admin_init() {
 	$settings = get_option( 'ss_dev_tabbed_settings' );
@@ -18,16 +18,16 @@ function ss_dev_admin_init() {
 		add_option( 'ss_dev_tabbed_settings', $settings, '', 'yes' );
 	}
 }
-
+// Notice: Undefined index: ss-dev-settings-submit in /app/public/wp-content/plugins/sidetrack-dev-tools/inc/sidetrack-tabbed-settings.php on line 30
 function ss_dev_settings_page_init() {
 	$plugin_data = get_ss_dev_setup_data();
 	// $settings_page = add_dashboard_page( $plugin_data['Name'] . ' Settings', $plugin_data['Name'] . ' Settings', 'manage_options', 'sidetrack-settings', 'ss_dev_settings_page' );
-	$settings_page = add_dashboard_page( 'Sidetrack Settings', 'Sidetrack Settings', 'manage_options', 'sidetrack-settings', 'ss_dev_settings_page' );
+	$settings_page = add_submenu_page( 'ss-dev-dashboard.php', 'Sidetrack Settings', 'Sidetrack Settings', 'manage_options', 'sidetrack-settings', 'ss_dev_settings_page' );
 	add_action( "load-{$settings_page}", 'ss_dev_load_settings_page' );
 }
 
 function ss_dev_load_settings_page() {
-	if ( $_POST['ss-dev-settings-submit'] == 'Y' ) {
+	if ( isset( $_POST['ss-dev-settings-submit'] ) && 'Y' === $_POST['ss-dev-settings-submit'] ) {
 		check_admin_referer( 'ss-dev-settings-page' );
 		ss_dev_save_tabbed_settings();
 		$url_parameters = isset( $_GET['tab'] ) ? 'updated=true&tab=' . $_GET['tab'] : 'updated=true';
